@@ -3,6 +3,20 @@ import { useTheme } from "@emotion/react";
 
 const ShowEmployeeDetails = ({ viewSelectedEmployee }) => {
   const theme = useTheme();
+
+  const getTextLayout = (label, value) => {
+    return (
+      <Box display="flex" gap={2}>
+        <Typography variant="subtitle1"> {label} : </Typography>
+        <Typography
+          variant="subtitle1"
+          sx={{ fontWeight: "bold", textTransform: "capitalize" }}
+        >
+          {value}
+        </Typography>
+      </Box>
+    );
+  };
   return (
     <Paper
       elevation={4}
@@ -22,46 +36,12 @@ const ShowEmployeeDetails = ({ viewSelectedEmployee }) => {
         >
           {viewSelectedEmployee.email ? "Employee Info" : "Team Info"}
         </Typography>
-        <Box display="flex" gap={2}>
-          <Typography variant="subtitle1"> Role : </Typography>
-          <Typography
-            variant="subtitle1"
-            sx={{ fontWeight: "bold", textTransform: "capitalize" }}
-          >
-            {viewSelectedEmployee.role}
-          </Typography>
-        </Box>
-        <Box display="flex" gap={2}>
-          <Typography variant="subtitle1"> Name : </Typography>
-          <Typography
-            variant="subtitle1"
-            sx={{ fontWeight: "bold", textTransform: "capitalize" }}
-          >
-            {viewSelectedEmployee.name}
-          </Typography>
-        </Box>
-        {viewSelectedEmployee?.email && (
-          <Box display="flex" gap={2}>
-            <Typography variant="subtitle1"> Email : </Typography>
-            <Typography
-              variant="subtitle1"
-              sx={{ fontWeight: "bold", textTransform: "capitalize" }}
-            >
-              {viewSelectedEmployee.email}
-            </Typography>
-          </Box>
-        )}
-        {viewSelectedEmployee?.phone && (
-          <Box display="flex" gap={2}>
-            <Typography variant="subtitle1"> Phone : </Typography>
-            <Typography
-              variant="subtitle1"
-              sx={{ fontWeight: "bold", textTransform: "capitalize" }}
-            >
-              {viewSelectedEmployee.phone}
-            </Typography>
-          </Box>
-        )}
+        {getTextLayout("Role", viewSelectedEmployee.role)}
+        {getTextLayout("Name", viewSelectedEmployee.name)}
+        {viewSelectedEmployee?.email &&
+          getTextLayout("Email", viewSelectedEmployee.email)}
+        {viewSelectedEmployee?.phone &&
+          getTextLayout("Phone", viewSelectedEmployee.phone)}
       </Stack>
     </Paper>
   );

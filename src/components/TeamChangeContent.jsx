@@ -11,15 +11,6 @@ const TeamChangeContent = ({
 }) => {
   const theme = useTheme();
 
-  const handleChange = (team) => {
-    setSelectedTeam({
-      ...selectedTeam,
-      currentTeamName: team.name,
-      newTeamId: team.id,
-    });
-    console.log(team);
-  };
-
   const handleSubmit = (event) => {
     event.preventDefault();
     onSubmit();
@@ -55,7 +46,7 @@ const TeamChangeContent = ({
                   selectedTeam?.currentTeamName?.toLowerCase() ===
                   team?.name?.toLowerCase()
                 }
-                onChange={() => handleChange(team)}
+                onChange={() => setSelectedTeam(team)}
                 value={selectedTeam?.currentTeamName}
                 name="radio-buttons"
                 inputProps={{ "aria-label": "A" }}
@@ -63,17 +54,6 @@ const TeamChangeContent = ({
               <Typography variant="h5">Team {team?.name}</Typography>
             </Box>
           ))}
-
-          {/* <Box display={"flex"} justifyContent="flex-start" alignItems="center">
-            <Radio
-              checked={selectedValue === "b"}
-              onChange={handleChange}
-              value="b"
-              name="radio-buttons"
-              inputProps={{ "aria-label": "B" }}
-            />
-            <Typography variant="h5">Team charlie</Typography>
-          </Box> */}
         </Stack>
         <Box display={"flex"} width="100%" gap={theme.spacing(2)}>
           <Button

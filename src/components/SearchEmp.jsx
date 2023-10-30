@@ -9,6 +9,7 @@ const SearchEmp = ({ handleSearch, searchQuery, handleSearchSubmit }) => {
       handleSearchSubmit();
     }
   };
+
   const getInput = (
     placeholder,
     name,

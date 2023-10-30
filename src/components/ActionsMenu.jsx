@@ -11,7 +11,6 @@ import {
   PublishedWithChangesOutlinedIcon,
 } from "../icons";
 
-
 const ActionsMenu = ({
   data,
   handleEmployeeEdit,
@@ -32,7 +31,6 @@ const ActionsMenu = ({
     setAnchorEl(null);
   };
 
-  // HANDLE EDIT
   const handleEdit = (type) => {
     if (type) handleEmployeeEdit(data?.id);
     else handleTeamEdit(data?.id);
@@ -65,6 +63,13 @@ const ActionsMenu = ({
     handleClose();
   };
 
+  const ROLES = {
+    HEAD: data?.role?.toLowerCase()?.includes("head"),
+    LEAD: data?.role?.toLowerCase()?.includes("lead"),
+    MEMBER: data?.role?.toLowerCase()?.includes("member"),
+    TEAM: !data?.email,
+  };
+
   return (
     <Stack>
       <Button
@@ -91,7 +96,7 @@ const ActionsMenu = ({
           horizontal: "left",
         }}
       >
-        {(data?.role?.toLowerCase()?.includes("head") || !data?.email) && (
+        {(ROLES.HEAD || ROLES.TEAM) && (
           <MenuItem onClick={() => handleAdd(data?.email)}>
             <ListItemIcon>
               <AddCircleOutlineIcon fontSize="small" />
@@ -111,7 +116,7 @@ const ActionsMenu = ({
           </ListItemIcon>
           view
         </MenuItem>
-        {data?.role?.toLowerCase()?.includes("member") && (
+        {ROLES.MEMBER && (
           <>
             <MenuItem onClick={handleDelete}>
               <ListItemIcon>
@@ -127,8 +132,7 @@ const ActionsMenu = ({
             </MenuItem>
           </>
         )}
-        {(data?.role?.toLowerCase()?.includes("member") ||
-          data?.role?.toLowerCase()?.includes("lead")) && (
+        {(ROLES.MEMBER || ROLES.LEAD) && (
           <MenuItem onClick={handlePromote}>
             <ListItemIcon>
               <PublishOutlinedIcon fontSize="small" />

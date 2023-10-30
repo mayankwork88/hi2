@@ -6,7 +6,6 @@ import useUtils from "./useUtils";
 const useTeamChange = () => {
   const state = useSelector((state) => state.company);
   const dispatch = useDispatch();
-  const { getTeamById, findDepartmentByMemberId, getTeamStatsByEmployeeId,getSelectedEmployee} = useUtils();
   const [teamsInADepartment, setTeamsInADepartment] = useState([]);
   const [selectedTeam, setSelectedTeam] = useState({
     currentTeamName: "",
@@ -14,37 +13,83 @@ const useTeamChange = () => {
     newTeamId: null,
   });
 
-  const handleMemberTeamChange = (memberId, handleEventType) => {
+  //FROM CUSTOM HOOK UTILS
+  const {
+    getTeamById,
+    findDepartmentByMemberId,
+    getTeamStatsByEmployeeId,
+    getSelectedEmployee,
+  } = useUtils();
+
+  //USER CLICK ON TEAM CHANGE BUTTON
+  const handleMemberTeamChange = (
+    memberId,
+    handleEventType,
+    handleModalOpen
+  ) => {
+    //SET THE EVENT TYPE TO "changeTeam"
     handleEventType("changeTeam");
-    handleModalClose();
+
+    //OPEN THE MODAL
+    handleModalOpen();
+
+    //FIND THE MEMBER CURRENT TEAM
     const memberCurrentTeam = getTeamById(state, memberId);
+
+    //SET MEMBER CURRENT TEAM TO HIGHLIGHT WHEN SHOW TO ALL TEAMS
     setSelectedTeam({
       ...selectedTeam,
       currentTeamName: memberCurrentTeam?.name,
       memberId: memberId,
       newTeamId: null,
     });
+
+    //FIND ALL THE TEAMS IN THE SELECTED MEMBER DEPARTMENT/HEAD
     const tree = findDepartmentByMemberId(state, memberId);
+
+    //SET THE DEPARTMENT IN A STATE
     setTeamsInADepartment(tree?.teams);
   };
 
-  const handleTeamChangeSubmit = (handleShowAlert) => {
+  // HANDLE MEMBER TEAM CHANGE AND UPDATE THE STATE WITH NEW TEAM
+  const handleTeamValueChange = (team) => {
+    setSelectedTeam({
+      ...selectedTeam,
+      currentTeamName: team.name,
+      newTeamId: team.id,
+    });
+  };
+
+  // HANDLE THE FORM SUBMIT FOR CHANGE TEAM
+  const handleTeamChangeSubmit = (handleShowAlert, handleModalClose) => {
+    //CHECK OF THE NO. OF MEMBERS IN THE TEAM
     const isLastMember = getTeamStatsByEmployeeId(state, selectedTeam.memberId);
-    if (isLastMember === 1) handleShowAlert("A team must have at least one member")
+
+    //IF NO. OF MEMBERS === 1 -> SHOW THE BELOW POP UP
+    if (isLastMember === 1)
+      handleShowAlert("A team must have at least one member");
+    //IF NO. OF MEMBERS > 1 ->  CHANGE THE TEAM AS INTENDED
     else {
       const member = getSelectedEmployee(state, selectedTeam.memberId);
-      handleTeamChange(selectedTeam, member);
+      const data = { teamId: selectedTeam.newTeamId, newMember: member };
+      dispatch(removeTeamMember(member.id));
+      dispatch(addTeamMember(data));
     }
-    setOpenModal(false);
+
+    //CLOSE THE MODAL
+    handleModalClose();
+
+    //SET THE STATE TO NULL
     setSelectedTeam("");
   };
 
-  const handleTeamChange = (teamInfo, newMember) => {
-    const data = { teamId: teamInfo.newTeamId, newMember };
-    dispatch(removeTeamMember(newMember.id));
-    dispatch(addTeamMember(data));
+  return {
+    selectedTeam,
+    teamsInADepartment,
+    handleMemberTeamChange,
+    handleTeamChangeSubmit,
+    handleTeamValueChange,
   };
-  return { handleMemberTeamChange, handleTeamChangeSubmit };
 };
 
 export default useTeamChange;

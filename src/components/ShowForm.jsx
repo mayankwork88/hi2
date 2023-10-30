@@ -62,7 +62,9 @@ const ShowForm = ({ onChange, value, onSubmit, onCancel, disableInput }) => {
       )}
       {select &&
         selectData
-          ?.filter((menu) => menu?.value?.toLowerCase() !== value?.toLowerCase())
+          ?.filter(
+            (menu) => menu?.value?.toLowerCase() !== value?.toLowerCase()
+          )
           ?.map((option) => (
             <MenuItem key={option?.value} value={option?.value}>
               {option?.label}

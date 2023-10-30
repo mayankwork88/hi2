@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 /* eslint-disable react/prop-types */
 import { useState } from "react";
+import { useTheme } from "@emotion/react";
 import {
   Stack,
   Typography,
@@ -19,14 +20,16 @@ import {
   TeamChangeContent,
 } from "./";
 import { RemoveRedEyeOutlinedIcon, VisibilityOffIcon } from "../icons";
-import useHandleAddMember from "../hooks/useHandleAddMember";
-import { useTheme } from "@emotion/react";
-import useAddEditTeam from "../hooks/useAddEditTeam";
-import useDeleteMember from "../hooks/useDeleteMember";
-import useTeamChange from "../hooks/useTeamChange";
-import useViewEmployeeDetails from "../hooks/useViewEmployeeDetails";
-
-const EmployeeCard = ({ data, handleTeamChange, handleEmployeePromote }) => {
+import {
+  useHandleAddEditMember,
+  useAddEditTeam,
+  useDeleteMember,
+  useTeamChange,
+  useViewEmployeeDetails,
+  useFormSubmit,
+  useEventTypes,
+} from "../hooks";
+const EmployeeCard = ({ data, handleEmployeePromote }) => {
   const theme = useTheme();
 
   const [showAlert, setShowAlert] = useState({ alert: false, message: "" });
@@ -34,35 +37,55 @@ const EmployeeCard = ({ data, handleTeamChange, handleEmployeePromote }) => {
   const [eventType, setEventType] = useState(null);
   const [error, setError] = useState({ error: false, message: "" });
   const [expand, setExpand] = useState(false);
-
   const [disableInput, setDisableInput] = useState({
     disable: false,
     message: "",
   });
 
+  // ADD AND EDIT MEMBER TO THE TEAM
   const {
     newMember,
     setNewMember,
-    handleAddNewMemberChange,
+    handleAddEditMemberChange,
     handleAddNewMemberSubmit,
     handleEmployeeEditSubmit,
     handleEmployeeEdit,
     handleAddMemberClick,
-  } = useHandleAddMember();
+  } = useHandleAddEditMember();
 
+  //DELETE MEMBER FROM THE TEAM
+  const { handleDeleteMemberCheck } = useDeleteMember();
+
+  //ADD OR EDIT TEAM UNDER HEAD DEPARTMENT
   const {
     newTeam,
     setNewTeam,
-    handleAddNewTeamChange,
+    handleAddEditTeamChange,
     handleAddNewTeamSubmit,
+    handleTeamEdit,
     handleTeamEditSubmit,
     handleAddTeamClick,
   } = useAddEditTeam();
 
-  const { handleDeleteMemberCheck } = useDeleteMember();
-  const { handleMemberTeamChange, handleTeamChangeSubmit } = useTeamChange();
-  const {handleViewEmployeeDetails} = useViewEmployeeDetails()
+  // CHANGE THE TEAM OF A MEMBER IN THE SAME DEPARTMENT
+  const {
+    selectedTeam,
+    teamsInADepartment,
+    handleMemberTeamChange,
+    handleTeamChangeSubmit,
+    handleTeamValueChange,
+  } = useTeamChange();
 
+  // VIEW THE DETAILS OF AN EMPLOYEE
+  const { viewSelectedEmployee, handleViewEmployeeDetails } =
+    useViewEmployeeDetails();
+
+  // EVENT TYPES
+  const { EVENT_TYPES } = useEventTypes();
+
+  // const { chooseSubmit } = useFormSubmit();
+
+  // HANDLE WHEN SOMEONE CANCEL THE MODAL FORM
   const handleModalCancel = () => {
     setOpenModal(false);
     setNewTeam({ name: "" });
@@ -73,14 +96,22 @@ const EmployeeCard = ({ data, handleTeamChange, handleEmployeePromote }) => {
     });
   };
 
+  //HANLDE CLOSE MODAL ON FORM SUBMIT
   const handleModalClose = () => {
     setOpenModal(false);
   };
 
+  //HANDLE OPEN MODAL
+  const handleModalOpen = () => {
+    setOpenModal(true);
+  };
+
+  //HANDLE ERROR OR SHOW ERROR IF EXIST
   const handleError = (message) => {
     setError({ error: true, message });
   };
 
+  //ALERT USER WITH A SPECIFIC MESSAGE
   const handleShowAlert = (message) => {
     setShowAlert({
       alert: true,
@@ -88,10 +119,12 @@ const EmployeeCard = ({ data, handleTeamChange, handleEmployeePromote }) => {
     });
   };
 
+  //SET THE EVENT TYPE TO RUN THE SPECIFIC FUNCTION
   const handleEventType = (eventType) => {
     setEventType(eventType);
   };
 
+  // HANDLE INPUT DISABLE WHEN CERTAIN CONDITION MEETS
   const handleInputDisable = (message) => {
     setDisableInput({
       disable: true,
@@ -99,21 +132,20 @@ const EmployeeCard = ({ data, handleTeamChange, handleEmployeePromote }) => {
     });
   };
 
-  //event type :- addMember, editMember, view, addTeam
   const chooseSubmit = (type) => {
     switch (type) {
-      case "addMember":
-        return () => handleAddNewMemberSubmit(data.id, handleModalClose);
-      case "editMember":
-        return () => handleEmployeeEditSubmit(data.id, handleModalClose);
-      case "addTeam":
+      case EVENT_TYPES.ADD_MEMBER:
+        return () => handleAddNewMemberSubmit(data?.id, handleModalClose);
+      case EVENT_TYPES.EDIT_MEMBER:
+        return () => handleEmployeeEditSubmit(data?.id, handleModalClose);
+      case EVENT_TYPES.ADD_TEAM:
         return () =>
-          handleAddNewTeamSubmit(data.id, handleModalClose, handleError);
-      case "editTeam":
+          handleAddNewTeamSubmit(data?.id, handleModalClose, handleError);
+      case EVENT_TYPES.EDIT_TEAM:
         return () =>
-          handleTeamEditSubmit(data.id, handleModalClose, handleError);
-      case "changeTeam":
-        return () => handleTeamChangeSubmit(handleShowAlert);
+          handleTeamEditSubmit(data?.id, handleModalClose, handleError);
+      case EVENT_TYPES.CHANGE_TEAM:
+        return () => handleTeamChangeSubmit(handleShowAlert, handleModalClose);
       default:
         return handleAddNewTeamSubmit;
     }
@@ -121,57 +153,57 @@ const EmployeeCard = ({ data, handleTeamChange, handleEmployeePromote }) => {
 
   const modalContent = (type) => {
     switch (type) {
-      case "addMember":
+      case EVENT_TYPES.ADD_MEMBER:
         return (
           <ShowForm
-            onChange={handleAddNewMemberChange}
+            onChange={handleAddEditMemberChange}
             value={newMember}
             onSubmit={chooseSubmit(eventType)}
             onCancel={handleModalCancel}
             disableInput={disableInput}
           />
         );
-      case "editMember":
+      case EVENT_TYPES.EDIT_MEMBER:
         return (
           <ShowForm
-            onChange={handleAddNewMemberChange}
+            onChange={handleAddEditMemberChange}
             value={newMember}
             onSubmit={chooseSubmit(eventType)}
             onCancel={handleModalCancel}
             disableInput={disableInput}
           />
         );
-      case "view":
+      case EVENT_TYPES.VIEW_DETAILS:
         return (
           <ShowEmployeeDetails viewSelectedEmployee={viewSelectedEmployee} />
         );
-      case "addTeam":
+      case EVENT_TYPES.ADD_TEAM:
         return (
           <ShowTeamForm
-            onChange={handleAddNewTeamChange}
+            onChange={handleAddEditTeamChange}
             value={newTeam}
             onSubmit={chooseSubmit(eventType)}
             onCancel={handleModalCancel}
             error={error}
           />
         );
-      case "editTeam":
+      case EVENT_TYPES.EDIT_TEAM:
         return (
           <ShowTeamForm
-            onChange={handleAddNewTeamChange}
+            onChange={handleAddEditTeamChange}
             value={newTeam}
             onSubmit={chooseSubmit(eventType)}
             onCancel={handleModalCancel}
             error={error}
           />
         );
-      case "changeTeam":
+      case EVENT_TYPES.CHANGE_TEAM:
         return (
           <TeamChangeContent
             teamsInADepartment={teamsInADepartment}
             selectedTeam={selectedTeam}
             onSubmit={chooseSubmit(eventType)}
-            setSelectedTeam={setSelectedTeam}
+            setSelectedTeam={handleTeamValueChange}
             onCancel={handleModalCancel}
           />
         );
@@ -222,28 +254,30 @@ const EmployeeCard = ({ data, handleTeamChange, handleEmployeePromote }) => {
             <ActionsMenu
               data={data}
               handleEmployeeEdit={(id) =>
-                handleEmployeeEdit(id, handleModalClose, handleEventType)
+                handleEmployeeEdit(id, handleModalOpen, handleEventType)
               }
               handleTeamEdit={(id) =>
-                handleTeamEdit(id, handleModalClose, handleEventType)
+                handleTeamEdit(id, handleModalOpen, handleEventType)
               }
-              handleViewEmployeeDetails={(id) => handleViewEmployeeDetails(id,handleEventType,handleModalClose)}
+              handleViewEmployeeDetails={(id) =>
+                handleViewEmployeeDetails(id, handleEventType, handleModalOpen)
+              }
               handleDeleteMember={(id) =>
                 handleDeleteMemberCheck(id, handleShowAlert)
               }
-              handleAddMemberClick={() =>
+              handleAddMemberClick={(id) =>
                 handleAddMemberClick(
                   id,
                   handleEventType,
-                  handleModalClose,
+                  handleModalOpen,
                   handleInputDisable
                 )
               }
               handleAddTeamClick={() =>
-                handleAddTeamClick(handleEventType, handleModalClose)
+                handleAddTeamClick(handleEventType, handleModalOpen)
               }
               handleMemberTeamChange={(id) =>
-                handleMemberTeamChange(id, handleEventType, handleModalClose)
+                handleMemberTeamChange(id, handleEventType, handleModalOpen)
               }
               handleEmployeePromote={handleEmployeePromote}
             />
@@ -257,7 +291,6 @@ const EmployeeCard = ({ data, handleTeamChange, handleEmployeePromote }) => {
             <EmployeeCard
               key={ele.id}
               data={ele}
-              handleTeamChange={handleTeamChange}
               handleEmployeePromote={handleEmployeePromote}
             />
           ))}
