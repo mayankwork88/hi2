@@ -8,6 +8,7 @@ const companySlice = createSlice({
   name: "company",
   initialState,
   reducers: {
+    // ADD A NEW MEMBER
     addTeamMember(state, action) {
       const { teamId, newMember } = action.payload;
       const addMember = (tree, id, newMem) => {
@@ -25,6 +26,7 @@ const companySlice = createSlice({
       };
       addMember(state, teamId, newMember);
     },
+    // REMOVE A MEMBER
     removeTeamMember(state, action) {
       const removeMember = (tree, id) => {
         if (tree?.teams?.some((el) => el.id === id)) {
@@ -36,6 +38,7 @@ const companySlice = createSlice({
       };
       removeMember(state, action.payload);
     },
+    // UPDATE EMPLOYEE INFO
     updateEmployeeInfo(state, action) {
       const { employeeId, updatedEmployee } = action.payload;
       const updateEmployee = (tree, emplId, updatedEmp) => {
@@ -51,6 +54,7 @@ const companySlice = createSlice({
       };
       updateEmployee(state, employeeId, updatedEmployee);
     },
+    // CREATE A NEW TEAM
     createNewTeam(state, action) {
       const { departmentId, newTeam } = action.payload;
       const addTeam = (tree, id, team) => {
@@ -67,6 +71,7 @@ const companySlice = createSlice({
       };
       addTeam(state, departmentId, newTeam);
     },
+    // UPDATE A TEAM
     updateTeam(state, action) {
       const { teamId, updatedTeam } = action.payload;
       const updateTeam = (tree, teamId, updTeam) => {
@@ -80,6 +85,7 @@ const companySlice = createSlice({
       };
       updateTeam(state, teamId, updatedTeam);
     },
+    //PROMOTE A EMPLOYEE
     promoteEmployee(state, action) {},
   },
 });
