@@ -4,10 +4,9 @@ import {
   Stack,
   Typography,
   TextField,
-  Button,
-  Box,
 } from "@mui/material";
 import { useTheme } from "@emotion/react";
+import {ButtonGroup} from "../components";
 
 const ShowTeamForm = ({ onChange, value, onSubmit, onCancel, error }) => {
   const theme = useTheme();
@@ -71,32 +70,7 @@ const ShowTeamForm = ({ onChange, value, onSubmit, onCancel, error }) => {
             onChange
           )}
         </Stack>
-        <Box display={"flex"} width="100%" gap={theme.spacing(2)}>
-          <Button
-            variant="outlined"
-            sx={{
-              width: "100%",
-              fontSize: "1.2rem",
-              letterSpacing: "3px",
-              p: theme.spacing(1, 0),
-            }}
-            onClick={onCancel}
-          >
-            Cancel
-          </Button>
-          <Button
-            variant="contained"
-            sx={{
-              width: "100%",
-              fontSize: "1.2rem",
-              letterSpacing: "3px",
-              p: theme.spacing(1, 0),
-            }}
-            type="submit"
-          >
-            Submit
-          </Button>
-        </Box>
+        <ButtonGroup onCancel={onCancel}/>
       </Paper>
     </form>
   );

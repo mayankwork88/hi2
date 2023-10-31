@@ -18,13 +18,9 @@ const companySlice = createSlice({
           });
           return tree;
         }
-        const updatedMembers = tree?.teams?.map((ele) =>
-          addMember(ele, id, newMember)
-        );
-        return { ...tree, teams: updatedMembers };
+        tree?.teams?.map((ele) => addMember(ele, id, newMember));
       };
       addMember(state, teamId, newMember);
-      // state = newState;
     },
     removeTeamMember(state, action) {
       const removeMember = (tree, id) => {
@@ -33,11 +29,10 @@ const companySlice = createSlice({
           tree.teams.splice(index, 1);
           return tree;
         }
-        const updatedMembers = tree?.teams?.map((ele) => removeMember(ele, id));
+       tree?.teams?.map((ele) => removeMember(ele, id));
         return { ...tree, teams: updatedMembers };
       };
-      const newState = removeMember(state, action.payload);
-      // state = newState;
+      removeMember(state, action.payload);
     },
     updateEmployeeInfo(state, action) {
       const { employeeId, updatedEmployee } = action.payload;
