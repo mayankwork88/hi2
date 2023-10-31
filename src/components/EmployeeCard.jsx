@@ -26,17 +26,20 @@ import {
   useDeleteMember,
   useTeamChange,
   useViewEmployeeDetails,
-  useFormSubmit,
   useEventTypes,
 } from "../hooks";
 const EmployeeCard = ({ data, handleEmployeePromote }) => {
   const theme = useTheme();
 
-  const [showAlert, setShowAlert] = useState({ alert: false, message: "" });
+  const [showAlert, setShowAlert] = useState({
+    alert: false,
+    message: "",
+    type: "success",
+  });
   const [openModal, setOpenModal] = useState(false);
   const [eventType, setEventType] = useState(null);
   const [error, setError] = useState({ error: false, message: "" });
-  const [expand, setExpand] = useState(false);
+  const [expand, setExpand] = useState(true);
   const [disableInput, setDisableInput] = useState({
     disable: false,
     message: "",
@@ -112,10 +115,11 @@ const EmployeeCard = ({ data, handleEmployeePromote }) => {
   };
 
   //ALERT USER WITH A SPECIFIC MESSAGE
-  const handleShowAlert = (message) => {
+  const handleShowAlert = (message, type) => {
     setShowAlert({
       alert: true,
       message,
+      type,
     });
   };
 
@@ -135,15 +139,27 @@ const EmployeeCard = ({ data, handleEmployeePromote }) => {
   const chooseSubmit = (type) => {
     switch (type) {
       case EVENT_TYPES.ADD_MEMBER:
-        return () => handleAddNewMemberSubmit(data?.id, handleModalClose);
+        return () =>
+          handleAddNewMemberSubmit(data?.id, handleModalClose, handleShowAlert);
       case EVENT_TYPES.EDIT_MEMBER:
-        return () => handleEmployeeEditSubmit(data?.id, handleModalClose);
+        return () =>
+          handleEmployeeEditSubmit(data?.id, handleModalClose, handleShowAlert);
       case EVENT_TYPES.ADD_TEAM:
         return () =>
-          handleAddNewTeamSubmit(data?.id, handleModalClose, handleError);
+          handleAddNewTeamSubmit(
+            data?.id,
+            handleModalClose,
+            handleError,
+            handleShowAlert
+          );
       case EVENT_TYPES.EDIT_TEAM:
         return () =>
-          handleTeamEditSubmit(data?.id, handleModalClose, handleError);
+          handleTeamEditSubmit(
+            data?.id,
+            handleModalClose,
+            handleError,
+            handleShowAlert
+          );
       case EVENT_TYPES.CHANGE_TEAM:
         return () => handleTeamChangeSubmit(handleShowAlert, handleModalClose);
       default:
@@ -161,6 +177,7 @@ const EmployeeCard = ({ data, handleEmployeePromote }) => {
             onSubmit={chooseSubmit(eventType)}
             onCancel={handleModalCancel}
             disableInput={disableInput}
+            showRole={true}
           />
         );
       case EVENT_TYPES.EDIT_MEMBER:
@@ -227,7 +244,7 @@ const EmployeeCard = ({ data, handleEmployeePromote }) => {
       >
         <Alert
           onClose={() => setShowAlert({ alert: false, message: "" })}
-          severity="error"
+          severity={showAlert.type}
           sx={{ width: "100%" }}
         >
           {showAlert?.message}

@@ -9,10 +9,10 @@ const useSearch = () => {
   //SEARCH THROUGH THE ENTIRE STATE AND SET THE RESULT IN BELOW ARRAY AS PER THE QUERY
   const searchedResults = [];
   const getSelectedEmployee = (tree, query) => {
-    const isName = tree?.name?.toLowerCase()?.includes(query?.toLowerCase());
-    const isEmail = tree?.email?.toLowerCase()?.includes(query?.toLowerCase());
-    const isPhone = tree?.phone?.toLowerCase()?.includes(query?.toLowerCase());
-    if (isName || isEmail || isPhone) {
+    const isMatched = (val) =>
+      tree?.[val]?.toLowerCase()?.includes(query?.toLowerCase());
+
+    if (isMatched("name") || isMatched("email") || isMatched("phone")) {
       searchedResults.push(tree);
     }
     if (tree.teams && Array.isArray(tree.teams)) {

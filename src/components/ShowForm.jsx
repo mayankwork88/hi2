@@ -1,15 +1,16 @@
 /* eslint-disable react/prop-types */
-import {
-  Paper,
-  Stack,
-  Typography,
-  TextField,
-  MenuItem,
-} from "@mui/material";
+import { Paper, Stack, Typography, TextField, MenuItem } from "@mui/material";
 import { useTheme } from "@emotion/react";
-import {ButtonGroup} from "../components";
+import { ButtonGroup } from "../components";
 
-const ShowForm = ({ onChange, value, onSubmit, onCancel, disableInput }) => {
+const ShowForm = ({
+  onChange,
+  value,
+  onSubmit,
+  onCancel,
+  disableInput,
+  showRole,
+}) => {
   const theme = useTheme();
 
   const handleSubmit = (event) => {
@@ -116,18 +117,20 @@ const ShowForm = ({ onChange, value, onSubmit, onCancel, disableInput }) => {
             value?.phone,
             onChange
           )}
-          {getInput(
-            "Role",
-            disableInput,
-            "role",
-            true,
-            "role",
-            value?.role,
-            onChange,
-            data
-          )}
+          {showRole
+            ? getInput(
+                "Role",
+                disableInput,
+                "role",
+                true,
+                "role",
+                value?.role,
+                onChange,
+                data
+              )
+            : null}
         </Stack>
-        <ButtonGroup onCancel={onCancel}/>
+        <ButtonGroup onCancel={onCancel} />
       </Paper>
     </form>
   );

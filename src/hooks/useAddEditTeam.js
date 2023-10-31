@@ -27,7 +27,12 @@ const useAddEditTeam = () => {
   };
 
   // HANDLE FORM SUBMIT WHEN USER ADD TEAM
-  const handleAddNewTeamSubmit = (id, handleModalClose, handleError) => {
+  const handleAddNewTeamSubmit = (
+    id,
+    handleModalClose,
+    handleError,
+    handleShowAlert
+  ) => {
     //CHECK THE ENTERED TEAM NAME
     const isExist = isTeamNameExist(state, newTeam.name);
     //IF EXIST - SHOW THE BELOW ERROR
@@ -46,6 +51,9 @@ const useAddEditTeam = () => {
     setNewTeam({
       name: "",
     });
+
+    //SHOW THE SUCCESS MESSAGE
+    handleShowAlert("Team successfully added :)", "success");
   };
 
   //EDIT TEAM
@@ -68,7 +76,12 @@ const useAddEditTeam = () => {
   };
 
   // HANDLE THE FORM SUBMIT FOR EDIT TEAM
-  const handleTeamEditSubmit = (id, handleModalClose, handleError) => {
+  const handleTeamEditSubmit = (
+    id,
+    handleModalClose,
+    handleError,
+    handleShowAlert
+  ) => {
     //CHECK THE ENTERED TEAM NAME
     const isExist = isTeamNameExist(state, newTeam.name);
 
@@ -88,6 +101,9 @@ const useAddEditTeam = () => {
 
     //SET THE STATE TO NULL
     setNewTeam({ name: "" });
+
+    //SHOW THE SUCCESS MESSAGE
+    handleShowAlert("Team successfully edited :)", "success");
   };
 
   return {

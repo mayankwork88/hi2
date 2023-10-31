@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
-import { Paper, Stack, Typography, Radio } from "@mui/material";
+import { Paper, Stack, Typography, Radio, Box } from "@mui/material";
 import { useTheme } from "@emotion/react";
-import {ButtonGroup} from "../components";
+import { ButtonGroup } from "../components";
 
 const TeamChangeContent = ({
   teamsInADepartment,
@@ -56,7 +56,7 @@ const TeamChangeContent = ({
             </Box>
           ))}
         </Stack>
-        <ButtonGroup onCancel={onCancel}/>
+        <ButtonGroup onCancel={onCancel} />
       </Paper>
     </form>
   );

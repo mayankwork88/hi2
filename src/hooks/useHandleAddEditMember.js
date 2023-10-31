@@ -50,7 +50,7 @@ const useHandleAddEditMember = () => {
   };
 
   // HANDLE FORM SUBMIT WHEN USER ADD MEMBER
-  const handleAddNewMemberSubmit = (id, handleModalClose) => {
+  const handleAddNewMemberSubmit = (id, handleModalClose, handleShowAlert) => {
     const data = { teamId: id, newMember };
 
     //DISPATCH ADD MEMBER  ACTION
@@ -65,6 +65,9 @@ const useHandleAddEditMember = () => {
       email: "",
       phone: "",
     });
+
+    //SHOW THE SUCCESS MESSAGE
+    handleShowAlert("Employee successfully added :)", "success");
   };
 
   //EDIT EMPLOYEE DETAILS
@@ -90,7 +93,7 @@ const useHandleAddEditMember = () => {
   };
 
   // HANDLE THE FORM SUBMIT FOR EDIT EMPLOYEE
-  const handleEmployeeEditSubmit = (id, handleModalClose) => {
+  const handleEmployeeEditSubmit = (id, handleModalClose, handleShowAlert) => {
     const data = { employeeId: id, updatedEmployee: newMember };
 
     //DISPATCH UPDATE EMPLOYEE ACTION WITH THE REQUIRED DATA
@@ -105,6 +108,9 @@ const useHandleAddEditMember = () => {
       email: "",
       phone: "",
     });
+
+    //SHOW THE SUCCESS MESSAGE
+    handleShowAlert("Employee successfully edited :)", "success");
   };
 
   return {

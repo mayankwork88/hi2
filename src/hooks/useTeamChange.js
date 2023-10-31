@@ -55,7 +55,7 @@ const useTeamChange = () => {
   const handleTeamValueChange = (team) => {
     setSelectedTeam({
       ...selectedTeam,
-      currentTeamName: team.name,
+      currentTeamName: team?.name,
       newTeamId: team.id,
     });
   };
@@ -67,13 +67,17 @@ const useTeamChange = () => {
 
     //IF NO. OF MEMBERS === 1 -> SHOW THE BELOW POP UP
     if (isLastMember === 1)
-      handleShowAlert("A team must have at least one member");
+      handleShowAlert("A team must have at least one member", "error");
     //IF NO. OF MEMBERS > 1 ->  CHANGE THE TEAM AS INTENDED
     else {
       const member = getSelectedEmployee(state, selectedTeam.memberId);
       const data = { teamId: selectedTeam.newTeamId, newMember: member };
+      console.log(data, selectedTeam, "handleTeamChangeSubmit");
       dispatch(removeTeamMember(member.id));
       dispatch(addTeamMember(data));
+
+      //SHOW THE SUCCESS MESSAGE
+      handleShowAlert("Successfully change team :)", "success");
     }
 
     //CLOSE THE MODAL

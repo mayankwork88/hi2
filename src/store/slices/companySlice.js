@@ -1,16 +1,19 @@
 import { createSlice, nanoid } from "@reduxjs/toolkit";
 import { data } from "../../data";
 
+const companyState = localStorage.getItem("state");
+const initialState = companyState ? JSON.parse(companyState) : data;
+
 const companySlice = createSlice({
   name: "company",
-  initialState: { ...data },
+  initialState,
   reducers: {
     addTeamMember(state, action) {
       const { teamId, newMember } = action.payload;
       const addMember = (tree, id, newMem) => {
         if (tree.id === id) {
           tree.teams.unshift({
-            id: newMem?.id ? id : nanoid(),
+            id: newMem?.id ? newMem.id : nanoid(),
             name: newMem.name,
             email: newMem.email,
             phone: newMem.phone,
@@ -29,8 +32,7 @@ const companySlice = createSlice({
           tree.teams.splice(index, 1);
           return tree;
         }
-       tree?.teams?.map((ele) => removeMember(ele, id));
-        return { ...tree, teams: updatedMembers };
+        tree?.teams?.map((ele) => removeMember(ele, id));
       };
       removeMember(state, action.payload);
     },

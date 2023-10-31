@@ -116,21 +116,21 @@ const ActionsMenu = ({
           </ListItemIcon>
           view
         </MenuItem>
+        {(ROLES.MEMBER || ROLES.TEAM) && (
+          <MenuItem onClick={handleDelete}>
+            <ListItemIcon>
+              <DeleteOutlineIcon fontSize="small" />
+            </ListItemIcon>
+            Delete
+          </MenuItem>
+        )}
         {ROLES.MEMBER && (
-          <>
-            <MenuItem onClick={handleDelete}>
-              <ListItemIcon>
-                <DeleteOutlineIcon fontSize="small" />
-              </ListItemIcon>
-              Delete
-            </MenuItem>
-            <MenuItem onClick={handleTeamChange}>
-              <ListItemIcon>
-                <PublishedWithChangesOutlinedIcon fontSize="small" />
-              </ListItemIcon>
-              Change Team
-            </MenuItem>
-          </>
+          <MenuItem onClick={handleTeamChange}>
+            <ListItemIcon>
+              <PublishedWithChangesOutlinedIcon fontSize="small" />
+            </ListItemIcon>
+            Change Team
+          </MenuItem>
         )}
         {(ROLES.MEMBER || ROLES.LEAD) && (
           <MenuItem onClick={handlePromote}>

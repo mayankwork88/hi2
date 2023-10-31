@@ -16,9 +16,12 @@ const useDeleteMember = () => {
     const members = getTeamStatsByEmployeeId(state, id);
 
     //MEMBER COUNT === 1 -> CAN'T DELETE SHOW THE ALERT MESSAGE
-    if (members === 1) handleShowAlert("A team must have at least one member");
+    if (members === 1)
+      handleShowAlert("A team must have at least one member", "error");
     //MEMBER COUNT > 1 -> DISPATCH THE DELETE THE MEMBER ACTION
-    else dispatch(removeTeamMember(id));
+    else {
+      dispatch(removeTeamMember(id));
+    }
   };
 
   return { handleDeleteMemberCheck };
