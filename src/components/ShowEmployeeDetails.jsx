@@ -6,7 +6,7 @@ const ShowEmployeeDetails = ({ viewSelectedEmployee }) => {
 
   const getTextLayout = (label, value) => {
     return (
-      <Box display="flex" gap={2}>
+      <Box display="flex" gap={2} width={320}>
         <Typography variant="subtitle1"> {label} : </Typography>
         <Typography
           variant="subtitle1"

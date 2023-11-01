@@ -28,6 +28,8 @@ import {
   useViewEmployeeDetails,
   useEventTypes,
 } from "../hooks";
+import { RoleBadge } from "../CustomDesignedComponents";
+
 const EmployeeCard = ({ data }) => {
   const theme = useTheme();
 
@@ -143,7 +145,12 @@ const EmployeeCard = ({ data }) => {
           handleAddNewMemberSubmit(data?.id, handleModalClose, handleShowAlert);
       case EVENT_TYPES.EDIT_MEMBER:
         return () =>
-          handleEmployeeEditSubmit(data?.id, handleModalClose, handleShowAlert,"update");
+          handleEmployeeEditSubmit(
+            data?.id,
+            handleModalClose,
+            handleShowAlert,
+            "update"
+          );
       case EVENT_TYPES.ADD_TEAM:
         return () =>
           handleAddNewTeamSubmit(
@@ -252,9 +259,12 @@ const EmployeeCard = ({ data }) => {
       </Snackbar>
       <Paper sx={{ p: theme.spacing(2), border: "0.1px solid #0000003b" }}>
         <Box display={"flex"} justifyContent="space-between">
-          <Typography variant="h5" sx={{ textTransform: "capitalize" }}>
-            {data?.name} - {data?.role}
-          </Typography>
+          <Box display="flex" alignItems="center">
+            <Typography variant="h5" sx={{ textTransform: "capitalize" }}>
+              {data?.name}
+            </Typography>
+            <RoleBadge>{data?.role}</RoleBadge>
+          </Box>
           <Box display="flex">
             {data?.teams?.length ? (
               <>
@@ -271,7 +281,12 @@ const EmployeeCard = ({ data }) => {
             <ActionsMenu
               data={data}
               handleEmployeeEdit={(id) =>
-                handleEmployeeEdit(id, handleModalOpen, handleEventType,"update")
+                handleEmployeeEdit(
+                  id,
+                  handleModalOpen,
+                  handleEventType,
+                  "update"
+                )
               }
               handleTeamEdit={(id) =>
                 handleTeamEdit(id, handleModalOpen, handleEventType)
@@ -297,8 +312,14 @@ const EmployeeCard = ({ data }) => {
                 handleMemberTeamChange(id, handleEventType, handleModalOpen)
               }
               handleEmployeePromote={(id) =>
-                handleEmployeeEditSubmit(id, handleModalOpen, handleShowAlert,"promote")}
-            />  
+                handleEmployeeEditSubmit(
+                  id,
+                  handleModalOpen,
+                  handleShowAlert,
+                  "promote"
+                )
+              }
+            />
           </Box>
         </Box>
         <Stack
@@ -306,10 +327,7 @@ const EmployeeCard = ({ data }) => {
           sx={{ display: `${expand ? "black" : "none"}` }}
         >
           {data?.teams?.map((ele) => (
-            <EmployeeCard
-              key={ele.id}
-              data={ele}
-            />
+            <EmployeeCard key={ele.id} data={ele} />
           ))}
         </Stack>
       </Paper>

@@ -6,6 +6,7 @@ import {
   ShowEmployeeDetails,
   TabPane,
   Navbar,
+  NotFound,
 } from "./components";
 
 import { Container, Stack } from "@mui/material";
@@ -45,24 +46,36 @@ const App = () => {
           searchQuery={searchQuery}
           handleSearchSubmit={handleSearchSubmit}
         />
-        {filteredEmp?.length ? (
+        {filteredEmp ? (
           <>
             <TabPane
               text="searched results"
               btnText="go back"
               onClick={handleGoBack}
             />
-            <Stack direction="row" p={2} gap={2} flexWrap="wrap">
-              {filteredEmp.map((ele) => (
-                <ShowEmployeeDetails key={ele.id} viewSelectedEmployee={ele} />
-              ))}
-            </Stack>
+            {filteredEmp === "notFound" ? (
+              <NotFound />
+            ) : (
+              <>
+                <Stack
+                  direction="row"
+                  justifyContent="space-evenly"
+                  p={2}
+                  gap={2}
+                  flexWrap="wrap"
+                >
+                  {filteredEmp.map((ele) => (
+                    <ShowEmployeeDetails
+                      key={ele.id}
+                      viewSelectedEmployee={ele}
+                    />
+                  ))}
+                </Stack>
+              </>
+            )}
           </>
         ) : (
-          <EmployeeCard
-            key={companyInfo.id}
-            data={companyInfo}
-          />
+          <EmployeeCard key={companyInfo.id} data={companyInfo} />
         )}
       </Container>
     </Stack>

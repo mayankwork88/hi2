@@ -9,3 +9,4 @@ export { default as ShowTeamForm } from "./ShowTeamForm.jsx";
 export { default as TabPane } from "./TabPane.jsx";
 export { default as TeamChangeContent } from "./TeamChangeContent.jsx";
 export { default as ButtonGroup } from "./ButtonGroup.jsx";
+export { default as NotFound } from "./NotFound.jsx";

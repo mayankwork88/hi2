@@ -101,27 +101,27 @@ const ActionsMenu = ({
             <ListItemIcon>
               <AddCircleOutlineIcon fontSize="small" />
             </ListItemIcon>
-            Add
+            Add {ROLES.HEAD ? "Team" : "Employee"}
           </MenuItem>
         )}
         <MenuItem onClick={() => handleEdit(data?.email)}>
           <ListItemIcon>
             <EditOutlinedIcon fontSize="small" />
           </ListItemIcon>
-          Edit
+          Edit Profile
         </MenuItem>
         <MenuItem onClick={handleView}>
           <ListItemIcon>
             <RemoveRedEyeOutlinedIcon fontSize="small" />
           </ListItemIcon>
-          view
+          View Profile
         </MenuItem>
         {(ROLES.MEMBER || ROLES.TEAM) && (
           <MenuItem onClick={handleDelete}>
             <ListItemIcon>
               <DeleteOutlineIcon fontSize="small" />
             </ListItemIcon>
-            Delete
+            Delete Profile
           </MenuItem>
         )}
         {ROLES.MEMBER && (
@@ -132,7 +132,7 @@ const ActionsMenu = ({
             Change Team
           </MenuItem>
         )}
-        {(ROLES.MEMBER) && (
+        {ROLES.MEMBER && (
           <MenuItem onClick={handlePromote}>
             <ListItemIcon>
               <PublishOutlinedIcon fontSize="small" />

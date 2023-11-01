@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addTeamMember, updateEmployeeInfo } from "../store";
+import { addTeamMember, updateEmployeeInfo, removeTeamMember } from "../store";
 import useUtils from "./useUtils";
 
 const useHandleAddEditMember = () => {
@@ -14,8 +14,7 @@ const useHandleAddEditMember = () => {
   });
 
   //FROM UTILS CUSTOM HOOK
-  const { getSelectedEmployee, isTeamLeadExist, getTeamStatsByEmployeeId } =
-    useUtils();
+  const { getSelectedEmployee, isTeamLeadExist, getTeamById } = useUtils();
 
   //COMMON FOR ADD & EDIT MEMBER/EMPLOYEE - HANDLE CHANGE OF NAME, EMAIL, PHONE AND ROLE
   const handleAddEditMemberChange = (event) => {
@@ -121,12 +120,19 @@ const useHandleAddEditMember = () => {
     } else if (type === "promote") {
       const data = { employeeId: id, updatedEmployee: { role: "lead" }, type };
 
-      const mates = getTeamStatsByEmployeeId(state, id);
-      if (mates.member == 1) {
-
+      const team = getTeamById(state, id);
+      const islastMember = team?.teams?.filter(
+        (ele) => ele.role.toLowerCase() === "member"
+      )?.length;
+      const currentTeamLeadId = team?.teams?.find(
+        (ele) => ele.role.toLowerCase() === "lead"
+      )?.id;
+      if (islastMember == 1) {
         //SHOW THE ERROR MESSAGE
         handleShowAlert("A team must have at least one member", "error");
       } else {
+        //DISPATCH REMOLE EMPLOYEE ACTION TO REMOVE THE EXISTING TEAM LEAD
+        dispatch(removeTeamMember(currentTeamLeadId));
 
         //DISPATCH UPDATE EMPLOYEE ACTION WITH THE REQUIRED DATA
         dispatch(updateEmployeeInfo(data));

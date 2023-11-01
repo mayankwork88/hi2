@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 const useSearch = () => {
   const state = useSelector((state) => state.company);
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredEmp, setFilteredEmp] = useState([]);
+  const [filteredEmp, setFilteredEmp] = useState(null);
 
   //SEARCH THROUGH THE ENTIRE STATE AND SET THE RESULT IN BELOW ARRAY AS PER THE QUERY
   const searchedResults = [];
@@ -35,13 +35,14 @@ const useSearch = () => {
       getSelectedEmployee(state, searchQuery);
 
       //STORE THE RESULT IN A STATE
-      setFilteredEmp(searchedResults);
+      if (searchedResults?.length) setFilteredEmp(searchedResults);
+      else setFilteredEmp("notFound");
     }
   };
 
   //HANDLE BACK
   const handleGoBack = () => {
-    setFilteredEmp([]);
+    setFilteredEmp(null);
     setSearchQuery("");
   };
   return {
