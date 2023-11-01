@@ -31,7 +31,8 @@ const useAddEditTeam = () => {
     id,
     handleModalClose,
     handleError,
-    handleShowAlert
+    handleShowAlert,
+    hideError
   ) => {
     //CHECK THE ENTERED TEAM NAME
     const isExist = isTeamNameExist(state, newTeam.name);
@@ -54,6 +55,7 @@ const useAddEditTeam = () => {
 
     //SHOW THE SUCCESS MESSAGE
     handleShowAlert("Team successfully added :)", "success");
+    hideError();
   };
 
   //EDIT TEAM
@@ -80,7 +82,8 @@ const useAddEditTeam = () => {
     id,
     handleModalClose,
     handleError,
-    handleShowAlert
+    handleShowAlert,
+    hideError
   ) => {
     //CHECK THE ENTERED TEAM NAME
     const isExist = isTeamNameExist(state, newTeam.name);
@@ -104,6 +107,7 @@ const useAddEditTeam = () => {
 
     //SHOW THE SUCCESS MESSAGE
     handleShowAlert("Team successfully edited :)", "success");
+    hideError();
   };
 
   return {

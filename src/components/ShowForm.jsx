@@ -32,6 +32,7 @@ const ShowForm = ({
   const getInput = (
     placeholder,
     disabled,
+    type,
     name,
     select,
     label,
@@ -47,6 +48,7 @@ const ShowForm = ({
       id={name}
       select={select}
       label={label}
+      type={type}
       variant="outlined"
       size="large"
       value={value}
@@ -93,6 +95,7 @@ const ShowForm = ({
           {getInput(
             "Full Name",
             false,
+            "text",
             "name",
             false,
             "Full Name",
@@ -103,6 +106,7 @@ const ShowForm = ({
             "Enter Email",
             false,
             "email",
+            "email",
             false,
             "Email",
             value?.email,
@@ -111,6 +115,7 @@ const ShowForm = ({
           {getInput(
             "Phone",
             false,
+            "number",
             "phone",
             false,
             "phone",
@@ -121,6 +126,7 @@ const ShowForm = ({
             ? getInput(
                 "Role",
                 disableInput,
+                "",
                 "role",
                 true,
                 "role",

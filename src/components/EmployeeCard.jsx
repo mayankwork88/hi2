@@ -116,6 +116,11 @@ const EmployeeCard = ({ data }) => {
     setError({ error: true, message });
   };
 
+  //HANDLE ERROR OR HIDE ERROR IF NOT EXIST
+  const hideError = () => {
+    setError({ error: false, message: "" });
+  };
+
   //ALERT USER WITH A SPECIFIC MESSAGE
   const handleShowAlert = (message, type) => {
     setShowAlert({
@@ -157,7 +162,8 @@ const EmployeeCard = ({ data }) => {
             data?.id,
             handleModalClose,
             handleError,
-            handleShowAlert
+            handleShowAlert,
+            hideError
           );
       case EVENT_TYPES.EDIT_TEAM:
         return () =>
@@ -165,7 +171,8 @@ const EmployeeCard = ({ data }) => {
             data?.id,
             handleModalClose,
             handleError,
-            handleShowAlert
+            handleShowAlert,
+            hideError
           );
       case EVENT_TYPES.CHANGE_TEAM:
         return () => handleTeamChangeSubmit(handleShowAlert, handleModalClose);
