@@ -6,7 +6,6 @@ import {
   filterEmployee,
   createNewTeam,
   updateTeam,
-  promoteEmployee,
   companyReducer,
 } from "./slices/companySlice";
 
@@ -34,6 +33,5 @@ export {
   updateEmployeeInfo,
   filterEmployee,
   createNewTeam,
-  promoteEmployee,
   updateTeam,
 };

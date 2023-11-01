@@ -28,7 +28,7 @@ import {
   useViewEmployeeDetails,
   useEventTypes,
 } from "../hooks";
-const EmployeeCard = ({ data, handleEmployeePromote }) => {
+const EmployeeCard = ({ data }) => {
   const theme = useTheme();
 
   const [showAlert, setShowAlert] = useState({
@@ -143,7 +143,7 @@ const EmployeeCard = ({ data, handleEmployeePromote }) => {
           handleAddNewMemberSubmit(data?.id, handleModalClose, handleShowAlert);
       case EVENT_TYPES.EDIT_MEMBER:
         return () =>
-          handleEmployeeEditSubmit(data?.id, handleModalClose, handleShowAlert);
+          handleEmployeeEditSubmit(data?.id, handleModalClose, handleShowAlert,"update");
       case EVENT_TYPES.ADD_TEAM:
         return () =>
           handleAddNewTeamSubmit(
@@ -271,7 +271,7 @@ const EmployeeCard = ({ data, handleEmployeePromote }) => {
             <ActionsMenu
               data={data}
               handleEmployeeEdit={(id) =>
-                handleEmployeeEdit(id, handleModalOpen, handleEventType)
+                handleEmployeeEdit(id, handleModalOpen, handleEventType,"update")
               }
               handleTeamEdit={(id) =>
                 handleTeamEdit(id, handleModalOpen, handleEventType)
@@ -296,8 +296,9 @@ const EmployeeCard = ({ data, handleEmployeePromote }) => {
               handleMemberTeamChange={(id) =>
                 handleMemberTeamChange(id, handleEventType, handleModalOpen)
               }
-              handleEmployeePromote={handleEmployeePromote}
-            />
+              handleEmployeePromote={(id) =>
+                handleEmployeeEditSubmit(id, handleModalOpen, handleShowAlert,"promote")}
+            />  
           </Box>
         </Box>
         <Stack
@@ -308,7 +309,6 @@ const EmployeeCard = ({ data, handleEmployeePromote }) => {
             <EmployeeCard
               key={ele.id}
               data={ele}
-              handleEmployeePromote={handleEmployeePromote}
             />
           ))}
         </Stack>

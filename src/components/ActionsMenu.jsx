@@ -132,7 +132,7 @@ const ActionsMenu = ({
             Change Team
           </MenuItem>
         )}
-        {(ROLES.MEMBER || ROLES.LEAD) && (
+        {(ROLES.MEMBER) && (
           <MenuItem onClick={handlePromote}>
             <ListItemIcon>
               <PublishOutlinedIcon fontSize="small" />

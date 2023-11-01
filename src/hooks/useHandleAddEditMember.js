@@ -14,7 +14,8 @@ const useHandleAddEditMember = () => {
   });
 
   //FROM UTILS CUSTOM HOOK
-  const { getSelectedEmployee, isTeamLeadExist } = useUtils();
+  const { getSelectedEmployee, isTeamLeadExist, getTeamStatsByEmployeeId } =
+    useUtils();
 
   //COMMON FOR ADD & EDIT MEMBER/EMPLOYEE - HANDLE CHANGE OF NAME, EMAIL, PHONE AND ROLE
   const handleAddEditMemberChange = (event) => {
@@ -93,24 +94,47 @@ const useHandleAddEditMember = () => {
   };
 
   // HANDLE THE FORM SUBMIT FOR EDIT EMPLOYEE
-  const handleEmployeeEditSubmit = (id, handleModalClose, handleShowAlert) => {
-    const data = { employeeId: id, updatedEmployee: newMember };
+  const handleEmployeeEditSubmit = (
+    id,
+    handleModalClose,
+    handleShowAlert,
+    type
+  ) => {
+    if (type === "update") {
+      const data = { employeeId: id, updatedEmployee: newMember, type };
 
-    //DISPATCH UPDATE EMPLOYEE ACTION WITH THE REQUIRED DATA
-    dispatch(updateEmployeeInfo(data));
+      //DISPATCH UPDATE EMPLOYEE ACTION WITH THE REQUIRED DATA
+      dispatch(updateEmployeeInfo(data));
 
-    //CLOSE THE MODAL
-    handleModalClose();
+      //CLOSE THE MODAL
+      handleModalClose();
 
-    //SET THE STATE TO NULL
-    setNewMember({
-      name: "",
-      email: "",
-      phone: "",
-    });
+      //SET THE STATE TO NULL
+      setNewMember({
+        name: "",
+        email: "",
+        phone: "",
+      });
 
-    //SHOW THE SUCCESS MESSAGE
-    handleShowAlert("Employee successfully edited :)", "success");
+      //SHOW THE SUCCESS MESSAGE
+      handleShowAlert("Employee successfully edited :)", "success");
+    } else if (type === "promote") {
+      const data = { employeeId: id, updatedEmployee: { role: "lead" }, type };
+
+      const mates = getTeamStatsByEmployeeId(state, id);
+      if (mates.member == 1) {
+
+        //SHOW THE ERROR MESSAGE
+        handleShowAlert("A team must have at least one member", "error");
+      } else {
+
+        //DISPATCH UPDATE EMPLOYEE ACTION WITH THE REQUIRED DATA
+        dispatch(updateEmployeeInfo(data));
+
+        //SHOW THE SUCCESS MESSAGE
+        handleShowAlert("Employee successfully promoted :)", "success");
+      }
+    }
   };
 
   return {

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   EmployeeCard,
   SearchEmp,
@@ -7,16 +7,14 @@ import {
   TabPane,
   Navbar,
 } from "./components";
-import { promoteEmployee } from "./store";
+
 import { Container, Stack } from "@mui/material";
 import { useTheme } from "@emotion/react";
 import useSearch from "./hooks/useSearch";
 
 const App = () => {
-  const dispatch = useDispatch();
   const theme = useTheme();
   const state = useSelector((state) => state.company);
-
   const [companyInfo, setCompanyInfo] = useState(state);
 
   const {
@@ -30,10 +28,6 @@ const App = () => {
   useEffect(() => {
     setCompanyInfo(state);
   }, [state]);
-
-  const handleEmployeePromote = (empId) => {
-    dispatch(promoteEmployee(empId));
-  };
 
   return (
     <Stack>
@@ -68,7 +62,6 @@ const App = () => {
           <EmployeeCard
             key={companyInfo.id}
             data={companyInfo}
-            handleEmployeePromote={handleEmployeePromote}
           />
         )}
       </Container>

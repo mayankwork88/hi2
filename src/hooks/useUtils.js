@@ -40,8 +40,10 @@ const useUtils = () => {
     //FIND THE TEAM IN WHICH USER WANT TO KNOW THE NUMBER OF MEMBER
     if (tree?.teams?.some((emp) => emp.id === id)) {
       //IF EXIST - RETURN THE NO. OF MEMBER
-      return tree?.teams?.filter((el) => el.role.toLowerCase() === "member")
-        ?.length;
+      return {member:tree?.teams?.filter((el) => el.role.toLowerCase() === "member")
+      ?.length,
+    lead:tree?.teams?.filter((el) => el.role.toLowerCase() === "lead")
+    ?.length}
     }
 
     //CHECK THE ENTIRE STATE RECURSIVELY

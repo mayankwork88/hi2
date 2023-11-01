@@ -40,12 +40,17 @@ const companySlice = createSlice({
     },
     // UPDATE EMPLOYEE INFO
     updateEmployeeInfo(state, action) {
-      const { employeeId, updatedEmployee } = action.payload;
+      const { employeeId, updatedEmployee,type } = action.payload;
       const updateEmployee = (tree, emplId, updatedEmp) => {
         if (tree.id === emplId) {
-          tree.name = updatedEmp.name;
-          tree.email = updatedEmp.email;
-          tree.phone = updatedEmp.phone;
+          if(type === "update"){
+            tree.name = updatedEmp.name;
+            tree.email = updatedEmp.email;
+            tree.phone = updatedEmp.phone;
+          }else if(type === "promote"){
+            tree.role = updatedEmp.role
+          }
+          
           return;
         }
         if (tree.teams && Array.isArray(tree.teams)) {
@@ -85,8 +90,6 @@ const companySlice = createSlice({
       };
       updateTeam(state, teamId, updatedTeam);
     },
-    //PROMOTE A EMPLOYEE
-    promoteEmployee(state, action) {},
   },
 });
 
@@ -97,6 +100,5 @@ export const {
   filterEmployee,
   createNewTeam,
   updateTeam,
-  promoteEmployee,
 } = companySlice.actions;
 export const companyReducer = companySlice.reducer;

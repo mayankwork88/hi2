@@ -66,7 +66,7 @@ const useTeamChange = () => {
     const isLastMember = getTeamStatsByEmployeeId(state, selectedTeam.memberId);
 
     //IF NO. OF MEMBERS === 1 -> SHOW THE BELOW POP UP
-    if (isLastMember === 1)
+    if (isLastMember.member === 1)
       handleShowAlert("A team must have at least one member", "error");
     //IF NO. OF MEMBERS > 1 ->  CHANGE THE TEAM AS INTENDED
     else {
